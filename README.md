@@ -1,3 +1,3 @@
-## Hello World
+## Flappy Bird
 
-Basic React Native app with Expo
+2D game made with React Native, Three.js and Expo

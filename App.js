@@ -1,23 +1,33 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { AppLoading } from 'expo'
+import arrayFromObject from './utils/arrayFromObject'
+import cacheAssetsAsync from './utils/cacheAssetsAsync'
+import Files from './Files'
+import Game from './Game'
 
 export default class App extends React.Component {
+  state = { assetsLoaded: false }
+
+  componentWillMount() {
+    this.loadAssetsAsync()
+  }
+
+  loadAssetsAsync = async () => {
+    try {
+      await cacheAssetsAsync({
+        files: arrayFromObject(Files),
+      })
+    } catch (e) {
+      console.warn(
+        'There was an error caching assets (see: app.js), perhaps due to a ' +
+          'network timeout, so we skipped caching. Reload the app to try again.',
+      )
+      console.log(e.message)
+    } finally {
+      this.setState({ assetsLoaded: true })
+    }
+  }
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
+    return this.state.assetsLoaded ? <Game /> : <AppLoading />
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
