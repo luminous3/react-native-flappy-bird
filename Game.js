@@ -20,7 +20,16 @@ export default class Game extends Component {
     await this.setupBackground()
   }
 
-  setupBackground = async () => {}
+  setupBackground = async () => {
+    const { scene } = this
+    const { size } = scene
+    const bg = await this.setupStaticNode({
+      image: Files.sprites.bg,
+      size,
+      name: 'bg',
+    })
+    scene.add(bg)
+  }
 
   updateGame = delta => {}
 
